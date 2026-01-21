@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regimento Interno - MIPLACE</title>
+    <!-- Tailwind CSS para estilização rápida e profissional -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonte Google Fonts: Plus Jakarta Sans para um toque mais moderno e corporativo -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'], // Fonte mais moderna e legível
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7', // Azul corporativo sólido
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e', // Azul profundo para contrastes
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados para impressão */
+        @media print {
+            /* Oculta elementos que não devem sair na impressão */
+            .no-print, #sidebar, header, #intro-banner { 
+                display: none !important; 
+            }
+            
+            /* Reseta configurações de layout de tela para permitir fluxo de páginas */
+            body, html, #content-area, .flex, .flex-1, .h-screen { 
+                background-color: white !important; 
+                color: black !important; 
+                height: auto !important; 
+                width: 100% !important;
+                margin: 0 !important; 
+                padding: 0 !important; 
+                overflow: visible !important; 
+                display: block !important;
+                position: static !important;
+                font-size: 12pt !important; /* Fonte padrão para impressão */
+            }
+
+            /* Configuração dos boxes de conteúdo */
+            .content-section {
+                border: none !important;
+                margin-bottom: 20px !important;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+
+            /* Remove sombras e ajusta cores para economizar tinta, mantendo legibilidade */
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+            
+            /* Força a quebra de página antes do termo */
+            #termo {
+                page-break-before: always;
+                border: 1px solid #000 !important;
+                display: block !important;
+                margin-top: 2cm !important;
+            }
+            
+            /* Ajuste para inputs aparecerem como linhas preenchidas ou vazias */
+            input {
+                border: none !important;
+                border-bottom: 1px solid black !important;
+                background: transparent !important;
+                color: black !important;
+            }
+            
+            /* Garante que o texto seja sempre preto na impressão */
+            p, h1, h2, h3, h4, li, span {
+                color: black !important;
+            }
+
+            /* Esconde ícones decorativos na impressão para limpar o visual */
+            .lucide {
+                display: none !important;
+            }
+        }
+        
+        /* Scroll suave */
+        html { scroll-behavior: smooth; }
+
+        /* Estilo da barra de rolagem refinado */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; border: 2px solid #f8fafc; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-track { background: #0f172a; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; border-color: #0f172a; }
+
+        /* Highlight da busca */
+        mark.highlight {
+            background-color: #fde047;
+            color: #000;
+            padding: 2px 4px;
+            border-radius: 4px;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700 font-sans text-lg leading-relaxed transition-colors duration-300 dark:bg-slate-900 dark:text-slate-200">
+
+    <!-- Layout Container -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar (Menu Lateral) -->
+        <aside id="sidebar" class="bg-white dark:bg-slate-800 w-80 flex-shrink-0 border-r border-slate-200 dark:border-slate-700 flex flex-col transition-transform duration-300 transform -translate-x-full md:translate-x-0 fixed md:relative z-30 h-full shadow-2xl md:shadow-none">
+            
+            <!-- Logo Area -->
+            <div class="p-8 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-brand-700 dark:text-brand-500 tracking-tight">MIPLACE</h1>
+                    <div class="h-1 w-12 bg-brand-500 rounded mt-1 mb-1"></div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Portal do Colaborador</p>
+                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-brand-600 transition-colors">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 overflow-y-auto p-6 space-y-2">
+                <a href="#intro" class="flex items-center px-4 py-3 text-base font-semibold rounded-xl bg-brand-50 text-brand-800 dark:bg-brand-900/30 dark:text-brand-400 group shadow-sm ring-1 ring-brand-100 dark:ring-brand-900">
+                    <i data-lucide="home" class="w-5 h-5 mr-3"></i> Início
+                </a>
+                
+                <div class="pt-4 pb-2">
+                    <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Capítulos</p>
+                </div>
+
+                <a href="#direitos" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="shield-check" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 1. Direitos
+                </a>
+                <a href="#deveres" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="briefcase" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 2. Deveres
+                </a>
+                <a href="#remuneracao" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="coins" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 3. Remuneração
+                </a>
+                <a href="#convivencia" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="users" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 4. Convivência
+                </a>
+                <a href="#recursos" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="smartphone" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 5. Recursos
+                </a>
+                <a href="#disciplinar" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 6. Disciplinar
+                </a>
+                <a href="#limpeza" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="sparkles" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 7. Limpeza
+                </a>
+                <a href="#disposicoes" class="nav-item flex items-center px-4 py-3 text-base font-medium rounded-xl text-slate-600 hover:bg-white hover:shadow-md hover:text-brand-700 dark:text-slate-300 dark:hover:bg-slate-700/50 transition-all duration-200">
+                    <i data-lucide="file-text" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-brand-500"></i> 8. Disposições
+                </a>
+                
+                <div class="mt-8 border-t border-slate-100 dark:border-slate-700 pt-6">
+                     <a href="#termo" class="flex items-center justify-center px-4 py-3 text-base font-bold rounded-xl bg-green-600 text-white hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all hover:scale-[1.02]">
+                        <i data-lucide="pen-tool" class="w-5 h-5 mr-3"></i> Assinar Termo
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Footer Sidebar -->
+            <div class="p-6 border-t border-slate-100 dark:border-slate-700 text-sm text-slate-400 dark:text-slate-500 text-center">
+                <p>&copy; 2026 MIPLACE</p>
+                <p class="text-xs mt-1">Todos os direitos reservados.</p>
+                <p class="text-xs mt-1 font-medium text-slate-500 dark:text-slate-400">Dark Morellato</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden relative w-full bg-slate-50 dark:bg-slate-900">
+            
+            <!-- Top Header (Mobile Toggle + Search + Actions) -->
+            <header class="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 h-20 flex items-center justify-between px-6 sm:px-10 z-20 shadow-sm">
+                <div class="flex items-center flex-1">
+                    <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 mr-4 transition-colors">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
+                    </button>
+                    <!-- Search Bar Moderno -->
+                    <div class="relative w-full max-w-xl hidden sm:block group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i data-lucide="search" class="h-5 w-5 text-slate-400 group-focus-within:text-brand-500 transition-colors"></i>
+                        </div>
+                        <input type="text" id="searchInput" placeholder="Buscar no regimento (ex: férias, celular)..." class="block w-full pl-12 pr-4 py-3 border border-slate-200 dark:border-slate-600 rounded-2xl leading-5 bg-slate-50 dark:bg-slate-700/50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500 text-base transition-all shadow-inner dark:text-white" onkeyup="searchContent()">
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3 ml-4">
+                    <button onclick="toggleTheme()" class="p-3 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Alternar Tema">
+                        <i data-lucide="moon" class="w-6 h-6 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-6 h-6 hidden dark:block"></i>
+                    </button>
+                    <button onclick="window.print()" class="hidden sm:flex items-center px-4 py-2 rounded-full bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-900/30 dark:text-brand-400 dark:hover:bg-brand-900/50 transition-colors font-medium text-sm">
+                        <i data-lucide="printer" class="w-5 h-5 mr-2"></i> Imprimir
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Scroll Area -->
+            <main id="content-area" class="flex-1 overflow-y-auto p-4 sm:p-8 lg:p-12 scroll-smooth">
+                
+                <div class="max-w-5xl mx-auto space-y-12 pb-32">
+
+                    <!-- Intro Section Hero -->
+                    <section id="intro" class="relative overflow-hidden bg-gradient-to-br from-brand-700 to-brand-900 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-card text-center p-12 sm:p-16 text-white border border-brand-600/20">
+                        <!-- Abstract Shape background -->
+                        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full">
+                                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
+                            </svg>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm mb-8 ring-1 ring-white/20 shadow-xl">
+                                <i data-lucide="book-open" class="w-10 h-10 text-white"></i>
+                            </div>
+                            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6">Regimento Interno</h1>
+                            <p class="text-xl text-brand-50 max-w-3xl mx-auto font-light leading-relaxed">
+                                Diretrizes, direitos e deveres para garantir um ambiente de trabalho <span class="font-semibold text-white">harmonioso, produtivo e seguro</span> na MIPLACE.
+                            </p>
+                            <div class="mt-10 flex flex-wrap justify-center gap-4">
+                                <a href="#direitos" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-semibold rounded-full shadow-xl text-brand-900 bg-white hover:bg-brand-50 focus:outline-none focus:ring-4 focus:ring-brand-500/30 transition-all transform hover:-translate-y-1">
+                                    Começar Leitura
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 1: Direitos -->
+                    <section id="direitos" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">01</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Direitos dos Colaboradores</h2>
+                        </div>
+                        
+                        <div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
+                            <p class="text-xl mb-8 font-medium">Todo colaborador da MIPLACE tem assegurados os seguintes direitos, em estrita conformidade com a legislação trabalhista brasileira:</p>
+                            
+                            <div class="grid gap-4">
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Ambiente de Trabalho Seguro</h3>
+                                        <p class="text-lg">Direito a um ambiente com infraestrutura adequada e segura, conforme as normas de segurança e saúde no trabalho (CLT, Arts. 154 a 201).</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Remuneração e Benefícios</h3>
+                                        <p class="text-lg">Recebimento pontual de salário e benefícios estabelecidos. Eventuais premiações ou bonificações são consideradas liberalidade da empresa, atreladas exclusivamente ao desempenho extraordinário individual e coletivo (CLT, Art. 457, § 4º).</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Condições Dignas</h3>
+                                        <p class="text-lg">Acesso a local apropriado para refeições, descanso e instalações sanitárias.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Descanso Semanal Remunerado (DSR)</h3>
+                                        <p class="text-lg">Direito ao repouso semanal remunerado, preferencialmente aos domingos (CLT, Art. 67).</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Vale-Transporte</h3>
+                                        <p class="text-lg">Concessão do benefício conforme Lei nº 7.418/85, mediante solicitação e com o desconto previsto em lei.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4 mt-1">
+                                        <i data-lucide="check" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Demais Direitos</h3>
+                                        <p class="text-lg">Usufruto de todos os demais direitos previstos na CLT, Acordos ou Convenções Coletivas aplicáveis à categoria.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 2: Deveres -->
+                    <section id="deveres" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-brand-600"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">02</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Deveres e Responsabilidades</h2>
+                        </div>
+                        <div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
+                            <p class="text-xl mb-8">Para manutenção de um ambiente de trabalho ético, produtivo e respeitoso, são deveres de todo colaborador:</p>
+                            
+                            <div class="grid gap-6 md:grid-cols-2">
+                                <div class="bg-slate-50 dark:bg-slate-700/30 p-6 rounded-2xl hover:shadow-md transition-shadow border border-slate-100 dark:border-slate-700">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                                        <i data-lucide="user-check" class="w-6 h-6 mr-3 text-brand-500"></i> Conduta Ética e Profissional
+                                    </h3>
+                                    <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">Agir com ética, respeito e profissionalismo no relacionamento com colegas, clientes, fornecedores e superiores, acatando a hierarquia estabelecida. Descumprimentos sujeitam o colaborador a medidas disciplinares (CLT, Art. 482).</p>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-700/30 p-6 rounded-2xl hover:shadow-md transition-shadow border border-slate-100 dark:border-slate-700">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                                        <i data-lucide="package" class="w-6 h-6 mr-3 text-brand-500"></i> Zelo pelo Patrimônio
+                                    </h3>
+                                    <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">Conservar e fazer bom uso de todos os bens, equipamentos, instalações e informações da MIPLACE. Danos comprovados por dolo (intenção) ou culpa (negligência) poderão resultar em responsabilização e descontos (CLT, Art. 462, § 1º).</p>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-700/30 p-6 rounded-2xl hover:shadow-md transition-shadow border border-slate-100 dark:border-slate-700">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                                        <i data-lucide="lock" class="w-6 h-6 mr-3 text-brand-500"></i> Sigilo e Confidencialidade 
+                                    </h3>
+                                    <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">Manter sigilo absoluto sobre todas as informações estratégicas, financeiras, de clientes ou operacionais da empresa, inclusive após o término do contrato de trabalho. A violação é considerada falta grave.</p>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-700/30 p-6 rounded-2xl hover:shadow-md transition-shadow border border-slate-100 dark:border-slate-700">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center">
+                                        <i data-lucide="clock" class="w-6 h-6 mr-3 text-brand-500"></i> Pontualidade e Assiduidade
+                                    </h3>
+                                    <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed">Cumprir com rigor a jornada de trabalho estabelecida, executando as atividades com dedicação e eficiência. Faltas e atrasos não justificados resultarão em descontos proporcionais e medidas disciplinares.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 bg-red-50 dark:bg-red-900/10 p-6 rounded-2xl border-l-4 border-red-500">
+                                <h4 class="font-bold text-red-800 dark:text-red-400 text-lg uppercase mb-3 flex items-center">
+                                    <i data-lucide="alert-octagon" class="w-5 h-5 mr-2"></i> Comunicação de Irregularidades
+                                </h4>
+                                <p class="text-lg text-red-700 dark:text-red-300">Reportar imediatamente à liderança ou ao setor administrativo qualquer situação de risco, irregularidade ou conduta que possa comprometer a segurança, a ética ou as operações da empresa. A omissão poderá acarretar responsabilização.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 3: Remuneração -->
+                    <section id="remuneracao" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">03</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Remuneração, Benefícios e Premiação</h2>
+                        </div>
+                        <div class="space-y-8 text-slate-600 dark:text-slate-300">
+                            <div>
+                                <h3 class="text-2xl font-bold text-brand-700 dark:text-brand-400 mb-4 flex items-center">
+                                    <i data-lucide="banknote" class="w-6 h-6 mr-2"></i> Pagamento e Benefícios
+                                </h3>
+                                <ul class="list-none space-y-4 pl-2">
+                                    <li class="flex items-start">
+                                        <span class="w-2 h-2 bg-brand-500 rounded-full mt-2.5 mr-3 flex-shrink-0"></span>
+                                        <span class="text-lg"><strong>Salário:</strong> será pago mensalmente, até o 5º (quinto) dia útil de cada mês (CLT, Art. 459, § 1º).</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-2 h-2 bg-brand-500 rounded-full mt-2.5 mr-3 flex-shrink-0"></span>
+                                        <span class="text-lg"><strong>Vale-Transporte:</strong> Benefício opcional, concedido nos termos da Lei nº 7.418/85, com o respectivo desconto legal.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-2 h-2 bg-brand-500 rounded-full mt-2.5 mr-3 flex-shrink-0"></span>
+                                        <span class="text-lg"><strong>Vale-Alimentação:</strong> Crédito realizado no cartão multibenefícios Flash no primeiro dia útil do mês. (Benefício de natureza indenizatória, CLT, Art. 457, § 2º).</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-amber-50 dark:bg-amber-900/10 p-8 rounded-2xl border border-amber-100 dark:border-amber-900/30 shadow-sm">
+                                <h3 class="text-2xl font-bold text-amber-800 dark:text-amber-500 mb-4 flex items-center">
+                                    <i data-lucide="trophy" class="w-7 h-7 mr-3"></i> Política de Premiação
+                                </h3>
+                                <p class="mb-6 text-lg">O pagamento de prêmios é uma liberalidade da empresa, regida por critérios de desempenho extraordinário. A elegibilidade depende do cumprimento cumulativo de:</p>
+                                
+                                <div class="grid sm:grid-cols-2 gap-6 text-base">
+                                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border-l-4 border-amber-400">
+                                        <span class="font-bold block text-lg text-slate-900 dark:text-white mb-2">1. Meta Coletiva</span>
+                                        Atingir 100% da Meta de Vendas (quantidade de aparelhos) E 100% da Meta de Avaliações no Google. O não atingimento de qualquer uma inviabiliza o prêmio para toda a equipe.
+                                    </div>
+                                    <div class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border-l-4 border-amber-400">
+                                        <span class="font-bold block text-lg text-slate-900 dark:text-white mb-2">2. Meta Individual</span>
+                                        Manter conduta exemplar, sem sofrer sanções disciplinares.
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 pt-6 border-t border-amber-200 dark:border-amber-800/50 text-sm text-amber-900 dark:text-amber-300">
+                                    <strong class="block mb-3 text-base text-amber-800 dark:text-amber-400">A perda do prêmio no mês ocorre automaticamente em casos de:</strong>
+                                    <ul class="list-disc pl-5 space-y-2">
+                                        <li>Violação da ética de comunicação (gritos, linguagem vulgar, apelidos pejorativos).</li>
+                                        <li>Atrasos recorrentes (tolerância máxima de 10 minutos/dia).</li>
+                                        <li>Faltas não justificadas.</li>
+                                        <li>Atos de insubordinação ou indisciplina.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 4: Convivência -->
+                    <section id="convivencia" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-purple-500"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">04</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Princípios e Regras de Convivência</h2>
+                        </div>
+                        
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="text-2xl font-bold text-purple-700 dark:text-purple-400 mb-4">Princípios Norteadores</h3>
+                                <div class="p-6 bg-purple-50 dark:bg-purple-900/10 rounded-2xl border border-purple-100 dark:border-purple-900/20 italic text-xl text-slate-700 dark:text-slate-200 text-center font-medium">
+                                    "Todas as ações e interações devem pautar-se por: Respeito e Cordialidade, Integridade e Honestidade, Profissionalismo, Colaboração, Responsabilidade e Transparência."
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-2xl font-bold text-purple-700 dark:text-purple-400 mb-6">Regras Operacionais Essenciais</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Box -->
+                                    <div class="flex items-start p-5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex-shrink-0 mr-4 p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm text-brand-600"><i data-lucide="watch" class="w-6 h-6"></i></div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Horários</h4>
+                                            <p class="text-base text-slate-500 dark:text-slate-400">Cumprimento rigoroso da jornada, horário de almoço estabelecido e tolerância máxima de 10 minutos para marcação de ponto.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Box -->
+                                    <div class="flex items-start p-5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex-shrink-0 mr-4 p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm text-brand-600"><i data-lucide="shirt" class="w-6 h-6"></i></div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Aparência</h4>
+                                            <p class="text-base text-slate-500 dark:text-slate-400">Uso obrigatório do uniforme e crachá de identificação durante a jornada, se o colaborador tiver recebido.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Box -->
+                                    <div class="flex items-start p-5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex-shrink-0 mr-4 p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm text-brand-600"><i data-lucide="volume-2" class="w-6 h-6"></i></div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Disciplina</h4>
+                                            <p class="text-base text-slate-500 dark:text-slate-400">Respeito absoluto à hierarquia e comunicação clara e respeitosa. Atos de insubordinação são considerados faltas graves.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Box -->
+                                    <div class="flex items-start p-5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl transition-transform hover:-translate-y-1 duration-300">
+                                        <div class="flex-shrink-0 mr-4 p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm text-brand-600"><i data-lucide="smartphone" class="w-6 h-6"></i></div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Celular Pessoal</h4>
+                                            <p class="text-base text-slate-500 dark:text-slate-400">Uso do celular pessoal deve ser restrito a situações de urgência, sem prejudicar a produtividade.</p>
+                                        </div>
+                                    </div>
+                                    <!-- Box -->
+                                    <div class="flex items-start p-5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl transition-transform hover:-translate-y-1 duration-300 md:col-span-2">
+                                        <div class="flex-shrink-0 mr-4 p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm text-brand-600"><i data-lucide="layout" class="w-6 h-6"></i></div>
+                                        <div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Ambiente</h4>
+                                            <p class="text-base text-slate-500 dark:text-slate-400">Manter a organização e a limpeza do local de trabalho.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="mt-6 text-base text-slate-500 dark:text-slate-400 italic text-center border-t border-slate-100 dark:border-slate-700 pt-4">Descumprimentos sujeitam o colaborador a medidas disciplinares (CLT, Art. 482).</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 5: Recursos -->
+                    <section id="recursos" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">05</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Uso dos Recursos da Empresa</h2>
+                        </div>
+                        <p class="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">Todos os recursos (equipamentos, smartphones, sistemas, softwares, e-mail, etc.) são de propriedade da MIPLACE e destinam-se exclusivamente a fins profissionais.</p>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-2xl border border-blue-100 dark:border-blue-900/30 mb-8">
+                            <h3 class="text-2xl font-bold text-blue-800 dark:text-blue-400 mb-4 flex items-center">
+                                <i data-lucide="clipboard-list" class="w-6 h-6 mr-3"></i> Regras Gerais
+                            </h3>
+                            <ul class="list-disc pl-6 space-y-3 text-lg text-blue-900 dark:text-blue-200">
+                                <li><strong>Finalidade Profissional:</strong> Proibido o uso para assuntos particulares que interfira na produtividade ou segurança.</li>
+                                <li><strong>Conservação:</strong> Qualquer dano, perda ou mau funcionamento deve ser comunicado imediatamente.</li>
+                                <li><strong>Segurança:</strong> É vedada a instalação de softwares não autorizados e o acesso a conteúdos impróprios.</li>
+                                <li><strong>Devolução:</strong> Todos os itens devem ser devolvidos em perfeito estado ao desligamento.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 p-8 rounded-2xl border-2 border-blue-100 dark:border-blue-900/30 shadow-lg">
+                            <h3 class="text-2xl font-bold text-blue-800 dark:text-blue-400 mb-4 flex items-center">
+                                <i data-lucide="smartphone" class="w-6 h-6 mr-3"></i> Condições Específicas para Celular Corporativo
+                            </h3>
+                            <p class="text-lg text-blue-900 dark:text-blue-200 mb-4">O aparelho é concedido em regime de comodato (propriedade da empresa) e seu uso está sujeito a regras rigorosas:</p>
+                            <ul class="list-disc pl-6 space-y-3 text-lg text-blue-900 dark:text-blue-200">
+                                <li><strong>Local de Uso:</strong> Exclusivamente dentro das dependências da empresa.</li>
+                                <li><strong>Finalidade:</strong> Apenas para atividades laborais, durante o horário de trabalho.</li>
+                                <li><strong>Proibição Expressa:</strong> É terminantemente proibido retirar o aparelho celular corporativo das dependências da empresa.</li>
+                            </ul>
+                            <p class="mt-6 text-base text-blue-800/80 dark:text-blue-300 italic font-medium">Descumprimentos sujeitam o colaborador a medidas disciplinares (CLT, Art. 482).</p>
+                        </div>
+                    </section>
+
+                    <!-- Seção 6: Disciplinar -->
+                    <section id="disciplinar" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-red-500"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">06</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Medidas Disciplinares</h2>
+                        </div>
+
+                        <p class="mb-8 text-xl text-slate-600 dark:text-slate-300 font-medium">O descumprimento das normas poderá resultar na aplicação de medidas disciplinares progressivas:</p>
+
+                        <div class="relative pl-10 border-l-4 border-slate-200 dark:border-slate-700 space-y-10 ml-2">
+                            <div class="relative group">
+                                <span class="absolute -left-[54px] bg-yellow-400 rounded-full w-8 h-8 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition-transform"></span>
+                                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">1. Advertência Escrita</h3>
+                                <p class="text-lg text-slate-600 dark:text-slate-400">Para a primeira ocorrência, com orientação formal.</p>
+                            </div>
+                            <div class="relative group">
+                                <span class="absolute -left-[54px] bg-orange-500 rounded-full w-8 h-8 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition-transform"></span>
+                                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">2. Suspensão Disciplinar</h3>
+                                <p class="text-lg text-slate-600 dark:text-slate-400">Para reincidência, com perda do dia de trabalho e do respectivo salário, podendo incluir a perda da bonificação do mês.</p>
+                            </div>
+                            <div class="relative group">
+                                <span class="absolute -left-[54px] bg-red-600 rounded-full w-8 h-8 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition-transform"></span>
+                                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">3. Rescisão por Justa Causa</h3>
+                                <p class="text-lg text-slate-600 dark:text-slate-400">Aplicável em casos de falta gravíssima ou reincidência contumaz após advertências, conforme hipóteses do Art. 482 da CLT.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Seção 7: Limpeza -->
+                    <section id="limpeza" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-cyan-500"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">07</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Limpeza e Conservação</h2>
+                        </div>
+                        
+                        <div class="space-y-10 text-slate-600 dark:text-slate-300">
+                            
+                            <!-- Bloco 1: Responsabilidade Geral -->
+                            <div>
+                                <p class="mb-6 text-xl">É responsabilidade de todos os colaboradores manter a loja limpa, organizada e segura.</p>
+                                <div class="bg-cyan-50 dark:bg-cyan-900/10 p-8 rounded-2xl">
+                                    <ul class="list-disc pl-6 space-y-3 text-lg">
+                                        <li>Zelar pela limpeza geral da loja, eliminando resíduos e sujeiras.</li>
+                                        <li>Lavar a louça utilizada nas áreas de descanso após o uso.</li>
+                                        <li>Realizar a retirada regular do lixo das dependências da loja.</li>
+                                        <li>Conservar a limpeza e a higiene dos banheiros.</li>
+                                        <li>Manter balcões, mostruários e superfícies de atendimento limpos.</li>
+                                    </ul>
+                                    <p class="mt-6 text-lg font-bold text-cyan-700 dark:text-cyan-400">A limpeza é uma atividade diária essencial para a apresentação da loja, a saúde e a segurança de todos.</p>
+                                </div>
+                            </div>
+
+                            <!-- Bloco 2: Organização -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center">
+                                    <i data-lucide="layout-grid" class="w-6 h-6 mr-3 text-brand-500"></i> Organização do Espaço e Produtos
+                                </h3>
+                                <p class="mb-4 text-lg">A organização eficiente impacta diretamente a operação e a experiência do cliente:</p>
+                                <ul class="list-disc pl-6 space-y-3 text-lg mb-4">
+                                    <li>Organizar e manter em ordem capas, películas e acessórios (etiquetados e no lugar certo).</li>
+                                    <li>Manter o estoque organizado para facilitar a reposição e vendas.</li>
+                                    <li>Assegurar que displays e vitrines estejam sempre visualmente atrativos.</li>
+                                    <li>Revisar periodicamente a organização e disponibilidade dos produtos.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Bloco 3: Saúde e Segurança -->
+                            <div class="bg-red-50 dark:bg-red-900/10 p-8 rounded-2xl border-l-4 border-red-500 shadow-sm">
+                                <h3 class="text-2xl font-bold text-red-800 dark:text-red-400 mb-4 flex items-center">
+                                    <i data-lucide="heart-pulse" class="w-7 h-7 mr-3"></i> Saúde, Segurança e Limitações Físicas
+                                </h3>
+                                <p class="text-xl text-red-900 dark:text-red-200 mb-4 font-medium">A MIPLACE prioriza a saúde e a segurança de seus colaboradores:</p>
+                                <ul class="list-disc pl-6 space-y-3 text-lg text-red-800 dark:text-red-300">
+                                    <li><strong>Nenhuma atividade deve exigir esforço físico além das capacidades individuais.</strong> Solicite ajuda sempre que necessário.</li>
+                                    <li>Qualquer tarefa excessiva ou que possa causar lesão deve ser comunicada à gerência.</li>
+                                    <li>O respeito às limitações físicas é essencial para a prevenção de acidentes.</li>
+                                    <li>Necessidades de adaptação serão discutidas para garantir o conforto e segurança.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Seção 8: Disposições -->
+                    <section id="disposicoes" class="content-section bg-white dark:bg-slate-800 rounded-3xl shadow-card p-8 sm:p-12 border border-slate-100 dark:border-slate-700/50 relative overflow-hidden group hover:border-brand-200 dark:hover:border-slate-600 transition-colors">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-slate-400"></div>
+                        <div class="flex items-center mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-5xl font-black text-slate-100 dark:text-slate-700/50 mr-6 -ml-2">08</span>
+                            <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">Disposições Gerais</h2>
+                        </div>
+                        <ul class="space-y-4 text-slate-600 dark:text-slate-300 list-disc pl-6 text-xl">
+                            <li>Este Regimento Interno complementa as obrigações da CLT e da legislação trabalhista.</li>
+                            <li>A MIPLACE reserva-se o direito de alterar ou revisar este documento, com prévia comunicação.</li>
+                            <li>Casos omissos serão resolvidos pela diretoria, em consonância com a lei.</li>
+                            <li><strong>Compromisso e Ciência:</strong> O colaborador declara que leu e se compromete a cumprir integralmente todas as disposições.</li>
+                            <li>Estas disposições complementam o Contrato Individual de Trabalho, Código de Conduta e Política de Premiação.</li>
+                        </ul>
+                    </section>
+
+                    <!-- Área de Assinatura (Imprimível) -->
+                    <section id="termo" class="bg-white text-black p-10 sm:p-16 border border-slate-200 shadow-xl rounded-xl page-break block mt-12 max-w-4xl mx-auto transform hover:scale-[1.01] transition-transform duration-500">
+                        <div class="text-center mb-12 border-b-2 border-slate-100 pb-8">
+                            <h2 class="text-3xl font-bold uppercase tracking-widest text-slate-800 mb-2">Termo de Ciência</h2>
+                            <p class="text-lg text-slate-500 uppercase tracking-wide">Declaração de Recebimento e Concordância</p>
+                        </div>
+                        
+                        <div class="space-y-10 text-justify leading-loose text-xl">
+                            <p class="flex flex-wrap items-baseline gap-3">
+                                Eu, <input type="text" class="flex-grow border-b-2 border-slate-300 focus:border-black focus:outline-none bg-transparent px-2 py-1 font-handwriting text-2xl min-w-[300px]" placeholder="Nome Completo do Colaborador">, 
+                            </p>
+                            <p>
+                                declaro ter recebido, lido e entendido integralmente o conteúdo do <strong>Regimento Interno da MIPLACE</strong>, comprometendo-me a cumpri-lo fielmente.
+                            </p>
+                        </div>
+
+                        <div class="mt-24 flex flex-col items-center">
+                            <div class="border-t-2 border-black w-3/4 pt-4 text-center">
+                                <p class="font-bold text-lg">Assinatura do Colaborador</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-16 flex flex-col sm:flex-row justify-between items-end gap-10">
+                            <div class="text-lg w-full sm:w-auto">
+                                <div class="flex items-end gap-2">
+                                    <input type="text" class="border-b-2 border-slate-300 w-56 focus:border-black focus:outline-none bg-transparent px-2 text-center" placeholder="Cidade">
+                                    <span>/SP,</span>
+                                </div>
+                                <div class="text-sm text-slate-400 mt-2 text-center">Local</div>
+                            </div>
+                            <div class="text-lg w-full sm:w-auto">
+                                <div class="flex items-end gap-2">
+                                    <input type="text" class="border-b-2 border-slate-300 w-16 text-center focus:border-black focus:outline-none bg-transparent px-1" placeholder="Dia">
+                                    <span>de</span>
+                                    <input type="text" class="border-b-2 border-slate-300 w-40 text-center focus:border-black focus:outline-none bg-transparent px-1" placeholder="Mês">
+                                    <span>de 20</span>
+                                    <input type="text" class="border-b-2 border-slate-300 w-16 text-center focus:border-black focus:outline-none bg-transparent px-1" placeholder="Ano">
+                                </div>
+                                <div class="text-sm text-slate-400 mt-2 text-center">Data</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Botão de Ação para impressão no final (apenas tela) -->
+                    <div class="no-print bg-gradient-to-r from-brand-50 to-white dark:from-slate-800 dark:to-slate-900 p-8 rounded-3xl border border-brand-100 dark:border-slate-700 text-center mt-12 shadow-lg">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-100 dark:bg-brand-900/50 mb-4 text-brand-600">
+                            <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-brand-900 dark:text-brand-300 mb-2">Li e Concordo</h3>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg mx-auto">Ao finalizar a leitura, clique abaixo para gerar a versão de impressão e assinar o termo físico.</p>
+                        <button onclick="window.print()" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-full shadow-xl text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/30 transition-all transform hover:-translate-y-1">
+                            <i data-lucide="printer" class="w-6 h-6 mr-3"></i> Imprimir Termo
+                        </button>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts de Funcionalidade -->
+    <script>
+        // Inicializa ícones
+        lucide.createIcons();
+
+        // Toggle Sidebar Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        // Toggle Dark Mode
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Função para remover realces anteriores (limpa o HTML)
+        function removeHighlights() {
+            // Seleciona todas as tags <mark> com a classe highlight
+            const marks = document.querySelectorAll('mark.highlight');
+            marks.forEach(mark => {
+                const parent = mark.parentNode;
+                // Substitui a tag <mark> pelo seu próprio conteúdo de texto
+                parent.replaceChild(document.createTextNode(mark.textContent), mark);
+                parent.normalize(); // Une nós de texto adjacentes para manter o DOM limpo
+            });
+        }
+
+        // Função segura para realçar texto sem quebrar o HTML ou Inputs
+        function highlightText(element, term) {
+            if (!term) return;
+
+            // Cria um "caminhante" que percorre apenas nós de TEXTO dentro do elemento
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+            const nodesToReplace = [];
+
+            // Identifica quais nós de texto contêm o termo buscado
+            while(walker.nextNode()) {
+                const node = walker.currentNode;
+                // Pula se for script, style ou se já estiver dentro de um input (para não quebrar campos de digitação)
+                if (node.parentNode.nodeName === 'SCRIPT' || 
+                    node.parentNode.nodeName === 'STYLE' || 
+                    node.parentNode.nodeName === 'TEXTAREA' ||
+                    (node.parentNode.nodeName === 'INPUT' && node.parentNode.type !== 'hidden')) {
+                    continue;
+                }
+                
+                if (node.textContent.toLowerCase().includes(term)) {
+                    nodesToReplace.push(node);
+                }
+            }
+
+            // Substitui os nós identificados por fragmentos com o realce
+            nodesToReplace.forEach(node => {
+                const text = node.textContent;
+                // Cria regex insensível a maiúsculas/minúsculas
+                const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                
+                if (text.match(regex)) {
+                    const frag = document.createDocumentFragment();
+                    let lastIdx = 0;
+                    
+                    // Reconstrói o nó de texto inserindo a tag <mark> onde houver match
+                    text.replace(regex, (match, p1, offset) => {
+                        frag.appendChild(document.createTextNode(text.slice(lastIdx, offset)));
+                        const mark = document.createElement('mark');
+                        mark.className = 'highlight'; // Estilo definido no CSS
+                        mark.textContent = match;
+                        frag.appendChild(mark);
+                        lastIdx = offset + match.length;
+                    });
+                    
+                    frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+                    node.parentNode.replaceChild(frag, node);
+                }
+            });
+        }
+
+        // Função de Busca Principal
+        function searchContent() {
+            const input = document.getElementById('searchInput');
+            const term = input.value.toLowerCase().trim();
+            // Seleciona todas as seções (incluindo intro e termo)
+            const sections = document.querySelectorAll('section'); 
+            
+            // 1. Limpa realces anteriores
+            removeHighlights();
+
+            // 2. Filtra e Realça
+            let foundAny = false;
+
+            sections.forEach(section => {
+                // Se o campo estiver vazio, mostra tudo e remove destaques
+                if (term === "") {
+                    section.style.display = "";
+                    return;
+                }
+
+                // Verifica se o texto da seção contém o termo
+                if (section.innerText.toLowerCase().includes(term)) {
+                    section.style.display = ""; // Mostra a seção
+                    highlightText(section, term); // Realça a palavra encontrada
+                    foundAny = true;
+                } else {
+                    section.style.display = "none"; // Esconde a seção
+                }
+            });
+        }
+
+        // Fecha sidebar ao clicar em link no mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
